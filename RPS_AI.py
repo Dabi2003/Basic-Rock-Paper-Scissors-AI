@@ -1,8 +1,6 @@
 import random
 
 
-
-
 player_points=0
 ai_points=0
 
@@ -16,42 +14,56 @@ def train(arr):
             nums[x]+=1
         if(x=="S"):
             nums[x]+=1
-    
+    training_moves=[]
     big=max(nums,key=nums.get)    #next use the most common move of player to gain AI_points
     if(big=="R"):
-        return("P")
+        training_moves.append("P")
     if(big=="P"):
-        return("S")
+         training_moves.append("S")
     if(big=="S"):
-        return("R")
-    
+        training_moves.append("R")
+
+    #finding patterns
+    for i in range(0,len(arr)-1):
+        if(i==len(arr)-2):
+            break
+        temp=arr[i]+arr[i+1]+arr[i+2]
+        for x in range(i+3,len(arr)-1):
+            if(x==len(arr)-2):
+                break 
+            pattern=arr[x]+arr[x+1]+arr[x+2]
+            if(pattern==temp):
+                temp=[arr[i],arr[i+1],arr[i+2]]
+                for n in temp:
+                    if(n=="R"):
+                        training_moves.append("P")
+                    else:
+                        if(n=="P"):
+                            training_moves.append("S")
+                        else:
+                            if(n=="S"):
+                                training_moves.append("R")
+    return(training_moves)
+
+
    
-    
-
-  
-        
-            
-
-    
     
 #replaying the game but the AI is using past experiences to predict next move
 def play_again():
+    temp_moves=train(training_data)
+    print(temp_moves)
+    training_data.clear()
     for i in range(0,10):
-        move=input("Enter a move Type: R(rock) P(paper) S(scisscors) ")
-        training_data.append(move)
-        temp_move=train(training_data)
-        ai_move=temp_move
-        print("player: ",move)
-        print(" ")
-        print("AI_move:", ai_move)
-        compare(ai_move,move)
-        print("Player_score: ",player_points," AI_score: ",ai_points)
+            move=input("Enter a move Type: R(rock) P(paper) S(scisscors) ")
+            training_data.append(move)
+            ai_move=temp_moves[i]
+            print("player: ",move)
+            print(" ")
+            print("AI_move:", ai_move)
+            compare(ai_move,move)
+            print("Player_score: ",player_points," AI_score: ",ai_points)
+            
         
-
-   
-    
-        
-
 
 #compare player and AI move
 def compare(ai_move,move):
@@ -98,7 +110,6 @@ for i in range(0,10):
     compare(ai_move,move)
     print("Player_score: ",player_points," AI_score: ",ai_points)
 
-print(train(training_data))
 while(1):
     again=input("Would you like to play again? 'Y':yes 'N':no ")
     if(again=="Y"):
@@ -107,6 +118,8 @@ while(1):
         break
 
 
+
+#added some pattern recoginition, let's see if we could go deeper next time
 
 
 
