@@ -53,10 +53,13 @@ def play_again():
     temp_moves=train(training_data)
     print(temp_moves)
     training_data.clear()
+    count=0
     for i in range(0,10):
             move=input("Enter a move Type: R(rock) P(paper) S(scisscors) ")
             training_data.append(move)
-            ai_move=temp_moves[i]
+            if(count>len(temp_moves)-1):
+                break
+            ai_move=temp_moves[count]
             print("player: ",move)
             print(" ")
             print("AI_move:", ai_move)
@@ -120,6 +123,7 @@ while(1):
 
 
 #added some pattern recoginition, let's see if we could go deeper next time
+
 
 
 
